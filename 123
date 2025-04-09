@@ -1,0 +1,115 @@
+// ==UserScript==
+// @name         cc testing1
+// @namespace    http://tampermonkey.net/
+// @version      2024-12-30
+// @description  try to take over the world!
+// @author       You
+// @match        agma.io/*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=discord.com
+// @run-at       document-start
+// @grant        none
+// ==/UserScript==
+
+const strings = [
+    "src", "isTrusted", "2663MWYvMG", "text", "apply", "then", "1666bUvYoz",
+    "info", "loginFunction", "now", "table", "IjxHt", "FKEfh", "indexOf",
+    "AbfWE", "OEIHj", "SCRIPT", "([\\w\\d]+?)\\(([\\w\\d]+?),([\\w\\d]+?),([\\w\\d]+?)\\){([\\w\\d]+?)\\(",
+    "parentElement", "tagName", "=!0x0;}}fun", "0x0), window.loginAcc = function(user,pw){eval(",
+    "5eeHemJ", "removeChild", " ms", "854371QIQTlq", "SFxES", "1UFSALc",
+    ")(user, password, 0)},", "trace", "fBCRc", "RvNXW", "replaceAll",
+    "\\[0x291\\]", "yOFWH", "length", "nodeType", "forEach", "\\[0xbf\\]",
+    "){loginPw=", "SCQlG", "console", "__proto__", "{}.constructor(\"return this\")( )",
+    "46185iQngZJ", "OTtxB", "replace", "#password", "0x0\\),([\\w\\d]+?)\\(",
+    "76691WKFGit", "ZuwiF", "\\]\\]", "prototype", "750641fsYMQx", "TueBe",
+    "liqSf", "observe", "_0x\\w+\\[", "Loaded modclient in ", "bind",
+    "embPL", "log", "ssUvG", "1069896TIRfbK", "; fun", "lsEQe", "match",
+    "warn", "toString", "type", "exception", "VRrns", "3vGgxYk",
+    "1187CgpMnP", "javascript/blocked", "error", "1trlYwV"
+];
+
+function mapIndex(index) {
+    return strings[index - 357];
+}
+
+(function (array, target) {
+    while (true) {
+        try {
+            const result = parseInt(mapIndex(383)) + parseInt(mapIndex(369)) +
+                  -parseInt(mapIndex(396)) * -parseInt(mapIndex(422)) +
+                  -parseInt(mapIndex(399)) * parseInt(mapIndex(419)) +
+                  -parseInt(mapIndex(364)) * parseInt(mapIndex(392)) +
+                  -parseInt(mapIndex(424)) * -parseInt(mapIndex(373)) +
+                  -parseInt(mapIndex(403)) * parseInt(mapIndex(393));
+
+            if (result === target) break;
+            else array.push(array.shift());
+        } catch (e) {
+            array.push(array.shift());
+        }
+    }
+})(strings, 622187);
+
+const createOneTimeFunction = function () {
+    let called = true;
+    return function (fn, context) {
+        if (called) {
+            const result = context.apply(fn, arguments);
+            called = false;
+            return result;
+        }
+    };
+};
+
+(function wrapConsole() {
+    const globalConsole = window.console || {};
+    const methods = ["log", "warn", "info", "error", "table", "trace"];
+    methods.forEach(method => {
+        const original = globalConsole[method];
+        globalConsole[method] = function () {
+            original && original.apply(globalConsole, arguments);
+        };
+    });
+})();
+
+const observer = new MutationObserver(mutations => {
+    mutations.forEach(({ addedNodes }) => {
+        addedNodes.forEach(node => {
+            if (
+                node.nodeType === 1 &&
+                node.tagName === "SCRIPT" &&
+                node.src &&
+                node.src.includes("js/ag260") //&&
+                // Date.now() < 1618000000000
+            ) {
+                console.log("Blocking script:", node.src);
+                node.type = "javascript/blocked";
+                node.parentElement.removeChild(node);
+                fetch(node.src)
+                    .then(res => res.text())
+                    .then(code => Function(modifyCore(code))());
+            }
+        });
+    });
+});
+
+observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+});
+
+function modifyCore(script) {
+    script = script.replace(`b(_0xdb56[1046])[_0xdb56[389]](x),b(_0xdb56[804])[_0xdb56[389]](x),Si[_0xdb56[1045]]=d}}`, `b(_0xdb56[1046])[_0xdb56[389]](x+9999),b(_0xdb56[804])[_0xdb56[389]](x+9999),Si[_0xdb56[1045]]=d}}`);
+    script = script.replace(`(window,window[_0xdb56[0]])`, `(window,window[_0xdb56[0]]);loaded=true;`);
+    console.log("Modified script:", script);
+    return script;
+}
+
+
+
+setTimeout(() => {
+    if (!loaded) {
+        alert("Modclient failed loading!");
+    } else {
+        console.log("Loaded modclient successfully.");
+    }
+}, 1000);
